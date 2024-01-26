@@ -10,13 +10,12 @@
 
 <body>
     <div class="task-container">
-
         <div id="h">
             <div class="cabecalho">
                 <h2>Hidrantes</h2>
                 <img src="./hidrante.png" alt="">
             </div>
-            <ul class="task-list">
+            <ul class="task-list" id="hidrantes-list">
                 <li>
                     <input type="checkbox">
                     H-01
@@ -66,7 +65,7 @@
                 <img src="./extintor.png" alt="">   
             </div>
             
-            <ul class="task-list">
+            <ul class="task-list" id="extintores-list">
                 <li>
                     <input type="checkbox">
                     BHIP01
@@ -150,8 +149,33 @@
         </div>
 
     </div>
+
+    <script>
+        // Função para adicionar um evento de clique aos checkboxes
+        function setupCheckboxEvents(listId, prefix) {
+            const list = document.getElementById(listId);
+
+            list.addEventListener('change', function (event) {
+                if (event.target.type === 'checkbox') {
+                    // Armazenar o estado do checkbox no localStorage
+                    const checkboxId = prefix + event.target.parentElement.textContent.trim();
+                    const isChecked = event.target.checked;
+                    localStorage.setItem(checkboxId, isChecked);
+                }
+            });
+
+            // Inicializar os checkboxes com o estado armazenado
+            const checkboxes = list.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(function (checkbox) {
+                const checkboxId = prefix + checkbox.parentElement.textContent.trim();
+                const isChecked = localStorage.getItem(checkboxId) === 'true';
+                checkbox.checked = isChecked;
+            });
+        }
+
+        // Inicializar os eventos para as listas de hidrantes e extintores
+        setupCheckboxEvents('hidrantes-list', 'h-');
+        setupCheckboxEvents('extintores-list', 'e-');
+    </script>
 </body>
-
-</html>
-
 </html>
